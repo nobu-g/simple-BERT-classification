@@ -89,7 +89,7 @@ def main():
             total_prediction += prediction.tolist()
         train_f1 = f1_score(total_target, total_prediction, average='macro')
         print(f'train_loss={total_loss / len(train_data_loader.dataset):.3f}', end=' ')
-        print(f'train_f1_score={train_f1:.3f}\n')
+        print(f'train_f1_score={train_f1:.3f}')
 
         # validation
         model.eval()
