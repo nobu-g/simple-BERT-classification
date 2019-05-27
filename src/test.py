@@ -41,8 +41,9 @@ def main():
 
     # build model architecture
     model = BertClassifier(args.bert_model, args.num_labels)
-    checkpoint = torch.load(args.load_path, map_location=device)
-    model.load_state_dict(checkpoint['state_dict'])
+    # load state dict
+    state_dict = torch.load(args.load_path, map_location=device)
+    model.load_state_dict(state_dict)
     model.to(device)
 
     model.eval()
