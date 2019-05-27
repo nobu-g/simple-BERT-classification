@@ -75,8 +75,9 @@ def main():
             target = target.to(device)          # (b)
 
             # Forward pass
-            output = model(input_ids, input_mask)   # (b, label)
-            loss = F.cross_entropy(output, target)  # ()
+            output = model(input_ids, input_mask)     # (b, label)
+            loss = F.cross_entropy(output, target)    # ()
+            prediction = torch.argmax(output, dim=1)  # (b)
 
             # Backward and optimize
             optimizer.zero_grad()
@@ -101,8 +102,8 @@ def main():
                 target = target.to(device)          # (b)
 
                 # Forward pass
-                output = model(input_ids, input_mask)  # (b, label)
-                loss = F.cross_entropy(output, target)  # ()
+                output = model(input_ids, input_mask)     # (b, label)
+                loss = F.cross_entropy(output, target)    # ()
                 prediction = torch.argmax(output, dim=1)  # (b)
 
                 total_loss += loss.item()
