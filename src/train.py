@@ -96,7 +96,7 @@ def main():
         total_loss = 0
         total_target, total_prediction = [], []
         with torch.no_grad():
-            for batch_idx, (input_ids, input_mask, target) in enumerate(train_data_loader):
+            for batch_idx, (input_ids, input_mask, target) in enumerate(valid_data_loader):
                 input_ids = input_ids.to(device)    # (b, seq)
                 input_mask = input_mask.to(device)  # (b, seq)
                 target = target.to(device)          # (b)
