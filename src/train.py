@@ -46,7 +46,7 @@ def main():
         os.environ["CUDA_VISIBLE_DEVICES"] = args.device
     device = torch.device('cuda:0' if torch.cuda.is_available() and args.device is not None else 'cpu')
 
-    tokenizer = BertTokenizer.from_pretrained(args.bert_model)
+    tokenizer = BertTokenizer.from_pretrained(args.bert_model, do_lower_case=False)
 
     # setup data_loader instances
     train_dataset = LabeledDocDataset(args.train_file, args.max_seq_length, tokenizer)
