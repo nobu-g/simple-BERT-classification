@@ -20,8 +20,8 @@ class BertClassifier(nn.Module):
                 ) -> torch.Tensor:  # (b, label)
         # (b, hid)
         _, pooled_output = self.bert(input_ids,
-                                     attention_mask=attention_mask,
                                      token_type_ids=segment_ids,
+                                     attention_mask=attention_mask,
                                      output_all_encoded_layers=False)
         logits = self.classifier(self.dropout(pooled_output))
         return logits
