@@ -69,13 +69,14 @@ def main():
         model.train()
         total_loss = 0
         total_target, total_prediction = [], []
-        for batch_idx, (input_ids, input_mask, target) in enumerate(train_data_loader):
-            input_ids = input_ids.to(device)    # (b, seq)
-            input_mask = input_mask.to(device)  # (b, seq)
-            target = target.to(device)          # (b)
+        for batch_idx, (input_ids, segment_ids, input_mask, target) in enumerate(train_data_loader):
+            input_ids = input_ids.to(device)      # (b, seq)
+            segment_ids = segment_ids.to(device)  # (b, seq)
+            input_mask = input_mask.to(device)    # (b, seq)
+            target = target.to(device)            # (b)
 
             # Forward pass
-            output = model(input_ids, input_mask)     # (b, label)
+            output = model(input_ids, segment_ids, input_mask)  # (b, label)
             loss = F.cross_entropy(output, target)    # ()
             prediction = torch.argmax(output, dim=1)  # (b)
 
@@ -96,13 +97,14 @@ def main():
         total_loss = 0
         total_target, total_prediction = [], []
         with torch.no_grad():
-            for batch_idx, (input_ids, input_mask, target) in enumerate(valid_data_loader):
-                input_ids = input_ids.to(device)    # (b, seq)
-                input_mask = input_mask.to(device)  # (b, seq)
-                target = target.to(device)          # (b)
+            for batch_idx, (input_ids, segment_ids, input_mask, target) in enumerate(valid_data_loader):
+                input_ids = input_ids.to(device)      # (b, seq)
+                segment_ids = segment_ids.to(device)  # (b, seq)
+                input_mask = input_mask.to(device)    # (b, seq)
+                target = target.to(device)            # (b)
 
                 # Forward pass
-                output = model(input_ids, input_mask)     # (b, label)
+                output = model(input_ids, segment_ids, input_mask)  # (b, label)
                 loss = F.cross_entropy(output, target)    # ()
                 prediction = torch.argmax(output, dim=1)  # (b)
 

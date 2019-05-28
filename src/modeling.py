@@ -15,9 +15,13 @@ class BertClassifier(nn.Module):
 
     def forward(self,
                 input_ids: torch.Tensor,       # (b, seq)
+                segment_ids: torch.Tensor,     # (b, seq)
                 attention_mask: torch.Tensor,  # (b, seq)
                 ) -> torch.Tensor:  # (b, label)
         # (b, hid)
-        _, pooled_output = self.bert(input_ids, attention_mask=attention_mask, output_all_encoded_layers=False)
+        _, pooled_output = self.bert(input_ids,
+                                     attention_mask=attention_mask,
+                                     token_type_ids=segment_ids,
+                                     output_all_encoded_layers=False)
         logits = self.classifier(self.dropout(pooled_output))
         return logits

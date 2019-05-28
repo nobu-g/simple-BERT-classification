@@ -18,19 +18,21 @@ class LabeledDocDataset(Dataset):
     def __len__(self) -> int:
         return len(self.sources)
 
-    def __getitem__(self, idx) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
+    def __getitem__(self, idx) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
         source: List[int] = self.sources[idx]
         seq_length = len(source)
         if seq_length > self.max_seq_length:
-            input_ids = np.array(source[:self.max_seq_length])  # (b, seq)
-            input_mask = np.array([1] * self.max_seq_length)    # (b, seq)
+            input_ids = np.array(source[:self.max_seq_length])  # (seq)
+            segment_ids = np.array([0] * self.max_seq_length)   # (seq)
+            input_mask = np.array([1] * self.max_seq_length)    # (seq)
         else:
             # Zero-pad up to the sequence length
             pad = [0] * (self.max_seq_length - seq_length)
-            input_ids = np.array(source + pad)             # (b, seq)
-            input_mask = np.array([1] * seq_length + pad)  # (b, seq)
+            input_ids = np.array(source + pad)                 # (seq)
+            segment_ids = np.array([0] * self.max_seq_length)  # (seq)
+            input_mask = np.array([1] * seq_length + pad)      # (seq)
         target = np.array(self.targets[idx])  # ()
-        return input_ids, input_mask, target
+        return input_ids, segment_ids, input_mask, target
 
     def _load(self, path: str) -> Tuple[List[List[int]], List[int]]:
         sources, targets = [], []
