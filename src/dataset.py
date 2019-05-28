@@ -40,7 +40,7 @@ class LabeledDocDataset(Dataset):
             for line in f:
                 tag, body = line.strip().split(',')  # assuming csv data
                 targets.append(int(tag))
-                tokens: List[str] = self.tokenizer.tokenize(body)
+                tokens: List[str] = ['[CLS]'] + self.tokenizer.tokenize(body) + ['[SEP]']
                 sources.append(self.tokenizer.convert_tokens_to_ids(tokens))
         assert len(sources) == len(targets)
         return sources, targets
