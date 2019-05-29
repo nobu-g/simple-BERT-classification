@@ -11,10 +11,10 @@ If you run `bert_sample.ipynb` on jupyter notebook, you can learn basic I/O of B
 
 1. clone this repository
 2. `pipenv sync --dev`
-3. `git clone git@github.com:huggingface/pytorch-pretrained-BERT.git`
-4. comment out `text = self._tokenize_chinese_chars(text)` in tokenization.py
-5. `pip install ./pytorch-pretrained-BERT`
-6. `pipenv shell`
+3. `pipenv shell`
+4. `git clone git@github.com:huggingface/pytorch-pretrained-BERT.git`
+5. comment out `text = self._tokenize_chinese_chars(text)` in tokenization.py
+6. `pip install ./pytorch-pretrained-BERT`
 
 
 ## Train
