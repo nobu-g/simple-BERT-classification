@@ -17,5 +17,6 @@
 
 ## Dataset
 Dataset is assumed to be CSV format like
-`<label>,<documnt>`
+`<label>,<documnt>`.
+
 `<document>` needs to be splitted into morphemes.
