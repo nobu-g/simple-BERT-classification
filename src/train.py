@@ -33,7 +33,7 @@ def main():
                         help='number of document class labels')
     parser.add_argument('--max-seq-length', type=int, default=512,
                         help='The maximum total input sequence length after WordPiece tokenization.')
-    parser.add_argument('--lr', type=float, default=5e-5,
+    parser.add_argument('--lr', type=float, default=2e-5,
                         help='learning rate')
     parser.add_argument('--seed', type=int, default=1,
                         help='random seed (default: 1)')
