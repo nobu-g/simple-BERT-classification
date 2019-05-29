@@ -4,10 +4,10 @@ This is a minimal PyTorch sample for document classification task on BERT.
 
 With this script, you can fine-tune BERT and test it.
 
-And if you run `bert_sample.ipynb` on jupyter notebook, you can learn basic I/O of BertModel.
+If you run `bert_sample.ipynb` on jupyter notebook, you can learn basic I/O of BertModel.
 
 
-## Set up
+## Set up environment
 
 1. clone this repository
 2. `pipenv sync --dev`
