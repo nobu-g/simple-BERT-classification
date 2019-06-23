@@ -11,6 +11,7 @@ jupyterthemes = "*"
 torch = "*"
 numpy = "*"
 sklearn = "*"
+parso = "*"
 
 [requires]
 python_version = "3.6"
