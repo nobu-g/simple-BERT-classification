@@ -8,10 +8,10 @@ jupyter = "*"
 jupyterthemes = "*"
 
 [packages]
-torch = "*"
 numpy = "*"
 sklearn = "*"
 parso = "*"
+torch = "==1.1.0"
 
 [requires]
 python_version = "3.6"
