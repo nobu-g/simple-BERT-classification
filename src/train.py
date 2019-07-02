@@ -2,6 +2,7 @@ import os
 from argparse import ArgumentParser
 
 import torch
+import torch.nn as nn
 import torch.nn.functional as F
 from torch.utils.data.dataloader import DataLoader
 from pytorch_pretrained_bert.tokenization import BertTokenizer
@@ -10,6 +11,24 @@ from sklearn.metrics import f1_score
 
 from modeling import BertClassifier
 from dataset import LabeledDocDataset
+
+
+def prepare_device(n_gpu_use):
+    """
+    setup GPU device if available, move model into configured device
+    """
+    n_gpu = torch.cuda.device_count()
+    if n_gpu_use > 0 and n_gpu == 0:
+        print("Warning: There\'s no GPU available on this machine,"
+              "training will be performed on CPU.")
+        n_gpu_use = 0
+    if n_gpu_use > n_gpu:
+        print("Warning: The number of GPU\'s configured to use is {}, but only {} are available "
+              "on this machine.".format(n_gpu_use, n_gpu))
+        n_gpu_use = n_gpu
+    device = torch.device('cuda:0' if n_gpu_use > 0 else 'cpu')
+    list_ids = list(range(n_gpu_use))
+    return device, list_ids
 
 
 def main():
@@ -44,7 +63,6 @@ def main():
 
     if args.device:
         os.environ["CUDA_VISIBLE_DEVICES"] = args.device
-    device = torch.device('cuda:0' if torch.cuda.is_available() and args.device is not None else 'cpu')
 
     tokenizer = BertTokenizer.from_pretrained(args.bert_model, do_lower_case=False)
 
@@ -54,9 +72,13 @@ def main():
     valid_dataset = LabeledDocDataset(args.valid_file, args.max_seq_length, tokenizer)
     valid_data_loader = DataLoader(valid_dataset, batch_size=args.batch_size, shuffle=False, num_workers=2)
 
+    device, device_ids = prepare_device(len(args.device.split(',')))
+
     # build model architecture
     model = BertClassifier(args.bert_model, args.num_labels)
     model.to(device)
+    if len(device_ids) > 1:
+        model = nn.DataParallel(model, device_ids=device_ids)
 
     # build optimizer
     optimizer = BertAdam(model.parameters(), lr=args.lr)

@@ -2,6 +2,7 @@ import os
 from argparse import ArgumentParser
 
 import torch
+import torch.nn as nn
 import torch.nn.functional as F
 from torch.utils.data.dataloader import DataLoader
 from pytorch_pretrained_bert.tokenization import BertTokenizer
@@ -9,6 +10,7 @@ from sklearn.metrics import f1_score
 
 from modeling import BertClassifier
 from dataset import LabeledDocDataset
+from train import prepare_device
 
 
 def main():
@@ -31,7 +33,6 @@ def main():
 
     if args.device:
         os.environ["CUDA_VISIBLE_DEVICES"] = args.device
-    device = torch.device('cuda:0' if torch.cuda.is_available() and args.device is not None else 'cpu')
 
     tokenizer = BertTokenizer.from_pretrained(args.bert_model)
 
@@ -39,12 +40,16 @@ def main():
     test_dataset = LabeledDocDataset(args.test_file, args.max_seq_length, tokenizer)
     test_data_loader = DataLoader(test_dataset, batch_size=args.batch_size, shuffle=False, num_workers=2)
 
+    device, device_ids = prepare_device(len(args.device.split(',')))
+
     # build model architecture
     model = BertClassifier(args.bert_model, args.num_labels)
     # load state dict
     state_dict = torch.load(args.load_path, map_location=device)
-    model.load_state_dict(state_dict)
+    model.load_state_dict({k.replace('module.', ''): v for k, v in state_dict.items()})
     model.to(device)
+    if len(device_ids) > 1:
+        model = nn.DataParallel(model, device_ids=device_ids)
 
     model.eval()
     total_loss = 0
