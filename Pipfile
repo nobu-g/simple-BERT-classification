@@ -12,6 +12,7 @@ numpy = "*"
 sklearn = "*"
 parso = "*"
 torch = "==1.1.0"
+pytorch-transformers = "*"
 
 [requires]
 python_version = "3.6"
