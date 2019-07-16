@@ -1,7 +1,7 @@
 from typing import List, Tuple
 
 from torch.utils.data import Dataset
-from pytorch_pretrained_bert.tokenization import BertTokenizer
+from pytorch_transformers import BertTokenizer
 import numpy as np
 
 

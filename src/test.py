@@ -5,7 +5,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from torch.utils.data.dataloader import DataLoader
-from pytorch_pretrained_bert.tokenization import BertTokenizer
+from pytorch_transformers import BertTokenizer
 from sklearn.metrics import f1_score
 
 from modeling import BertClassifier

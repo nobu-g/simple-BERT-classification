@@ -5,8 +5,8 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from torch.utils.data.dataloader import DataLoader
-from pytorch_pretrained_bert.tokenization import BertTokenizer
-from pytorch_pretrained_bert.optimization import BertAdam
+from pytorch_transformers import BertTokenizer
+from pytorch_transformers import AdamW
 from sklearn.metrics import f1_score
 
 from modeling import BertClassifier
@@ -64,7 +64,7 @@ def main():
     if args.device:
         os.environ["CUDA_VISIBLE_DEVICES"] = args.device
 
-    tokenizer = BertTokenizer.from_pretrained(args.bert_model, do_lower_case=False)
+    tokenizer = BertTokenizer.from_pretrained(args.bert_model, do_lower_case=False, tokenize_chinese_chars=False)
 
     # setup data_loader instances
     train_dataset = LabeledDocDataset(args.train_file, args.max_seq_length, tokenizer)
@@ -72,7 +72,7 @@ def main():
     valid_dataset = LabeledDocDataset(args.valid_file, args.max_seq_length, tokenizer)
     valid_data_loader = DataLoader(valid_dataset, batch_size=args.batch_size, shuffle=False, num_workers=2)
 
-    device, device_ids = prepare_device(len(args.device.split(',')))
+    device, device_ids = prepare_device(len(args.device.split(',')) if args.device else 0)
 
     # build model architecture
     model = BertClassifier(args.bert_model, args.num_labels)
@@ -81,7 +81,7 @@ def main():
         model = nn.DataParallel(model, device_ids=device_ids)
 
     # build optimizer
-    optimizer = BertAdam(model.parameters(), lr=args.lr)
+    optimizer = AdamW(model.parameters(), lr=args.lr)
 
     best_valid_f1 = -1
 

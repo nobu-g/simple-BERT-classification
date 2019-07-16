@@ -1,6 +1,6 @@
 import torch
 import torch.nn as nn
-from pytorch_pretrained_bert.modeling import BertModel
+from pytorch_transformers import BertModel
 
 
 class BertClassifier(nn.Module):
