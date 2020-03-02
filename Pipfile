@@ -9,10 +9,10 @@ jupyterthemes = "*"
 
 [packages]
 numpy = "*"
-sklearn = "*"
 parso = "*"
-torch = "==1.1.0"
 pytorch-transformers = "*"
+scikit-learn = "*"
+torch = "*"
 
 [requires]
 python_version = "3.6"
