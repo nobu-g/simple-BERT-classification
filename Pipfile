@@ -5,14 +5,12 @@ verify_ssl = true
 
 [dev-packages]
 jupyter = "*"
-jupyterthemes = "*"
 
 [packages]
 numpy = "*"
-parso = "*"
-pytorch-transformers = "*"
 scikit-learn = "*"
-torch = "*"
+torch = "==1.4.0"
+transformers = "*"
 
 [requires]
 python_version = "3.6"
