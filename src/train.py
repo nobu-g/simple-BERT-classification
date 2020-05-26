@@ -5,8 +5,8 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from torch.utils.data.dataloader import DataLoader
-from pytorch_transformers import BertTokenizer
-from pytorch_transformers import AdamW
+from transformers import BertTokenizer
+from transformers import AdamW
 from sklearn.metrics import f1_score
 
 from modeling import BertClassifier
